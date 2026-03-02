@@ -1,0 +1,86 @@
+{
+  "name": "social-media-parser",
+  "version": "0.1.0",
+  "description": "Lightweight, zero-dependency library to parse, identify, and normalize social media URLs across 18+ platforms.",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node && tsc --project tsconfig.build.json",
+    "check": "bun run typecheck && bun run lint && bun run test:coverage",
+    "release": "bun run check && npx bumpp --yes --release patch && git push --follow-tags",
+    "release:dry-run": "bun run check && bun run build && bun run publish:dry-run",
+    "lint": "oxlint src test",
+    "lint:fix": "oxlint src test --fix",
+    "format": "oxlint src test --fix",
+    "prepublishOnly": "bun run check && bun run build",
+    "publish:dry-run": "npm publish --access public --provenance --dry-run",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "social",
+    "social-media",
+    "url",
+    "parser",
+    "normalize",
+    "link-parser",
+    "url-parser",
+    "twitter",
+    "instagram",
+    "tiktok",
+    "reddit",
+    "youtube",
+    "facebook",
+    "linkedin",
+    "threads",
+    "bluesky",
+    "pinterest",
+    "twitch",
+    "telegram",
+    "snapchat",
+    "vimeo",
+    "dailymotion",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikuscs/social-media-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nikuscs/social-media-parser/issues"
+  },
+  "homepage": "https://github.com/nikuscs/social-media-parser#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "bumpp": "^10.4.1",
+    "oxlint": "^1.51.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
