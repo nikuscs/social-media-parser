@@ -5,6 +5,22 @@ export type SocialLinksPlatform =
   | 'reddit'
   | 'github'
   | 'youtube'
+  | 'spotify'
+  | 'mastodon'
+  | 'soundcloud'
+  | 'mixcloud'
+  | 'discord'
+  | 'substack'
+  | 'medium'
+  | 'vkontakte'
+  | 'rumble'
+  | 'kick'
+  | 'radiojavan'
+  | 'patreon'
+  | 'line'
+  | 'qq'
+  | 'lastfm'
+  | 'kofi'
   | 'facebook'
   | 'search'
   | 'linkedin'
@@ -21,6 +37,8 @@ export type SocialLinksContentType =
   | 'post'
   | 'profile'
   | 'video'
+  | 'track'
+  | 'album'
   | 'clip'
   | 'short'
   | 'story'
@@ -53,4 +71,9 @@ export interface SocialLinksPlatformParser {
   platform: SocialLinksPlatform
   domains: (hostname: string) => boolean
   parse: (url: URL) => SocialLinksParseResult
+}
+
+export interface SocialLinksParseOptions {
+  parsers?: SocialLinksPlatformParser[]
+  network?: SocialLinksPlatform
 }

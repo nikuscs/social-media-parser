@@ -14,9 +14,17 @@ const TRACKING_PARAMS = new Set([
 export function tryParseUrl(input: string): URL | null {
   let trimmed = input.trim()
   if (!trimmed) return null
-  if (!/^https?:\/\//i.test(trimmed)) {
+
+  // Recover malformed absolute URLs like "http:example.com/x" or "https:/example.com/x".
+  if (/^https?:/i.test(trimmed) && !/^https?:\/\//i.test(trimmed)) {
+    trimmed = trimmed.replace(/^([a-z]+):\/*/i, '$1://')
+  } else if (trimmed.startsWith('//')) {
+    // Protocol-relative input -> default to https.
+    trimmed = 'https:' + trimmed
+  } else if (!/^https?:\/\//i.test(trimmed)) {
     trimmed = 'https://' + trimmed
   }
+
   try {
     return new URL(trimmed)
   } catch {

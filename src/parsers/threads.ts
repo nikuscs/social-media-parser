@@ -8,7 +8,13 @@ export const threads: SocialLinksPlatformParser = {
   },
 
   parse(url): SocialLinksParseResult {
-    const segments = url.pathname.split('/').filter(Boolean)
+    const segments = url.pathname.split('/').filter(Boolean).map((segment) => {
+      try {
+        return decodeURIComponent(segment)
+      } catch {
+        return segment
+      }
+    })
 
     if (!segments[0] || !segments[0].startsWith('@')) return null
     const username = segments[0].slice(1)

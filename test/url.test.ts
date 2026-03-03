@@ -15,11 +15,35 @@ describe('tryParseUrl', () => {
     expect(url!.protocol).toBe('http:')
   })
 
+  it('recovers malformed http absolute URL missing slashes', () => {
+    const url = tryParseUrl('http:example.com/path')
+    expect(url).not.toBeNull()
+    expect(url!.protocol).toBe('http:')
+    expect(url!.hostname).toBe('example.com')
+    expect(url!.pathname).toBe('/path')
+  })
+
+  it('recovers malformed https absolute URL with single slash', () => {
+    const url = tryParseUrl('https:/example.com/path')
+    expect(url).not.toBeNull()
+    expect(url!.protocol).toBe('https:')
+    expect(url!.hostname).toBe('example.com')
+    expect(url!.pathname).toBe('/path')
+  })
+
   it('prepends https:// to bare domains', () => {
     const url = tryParseUrl('example.com/path')
     expect(url).not.toBeNull()
     expect(url!.protocol).toBe('https:')
     expect(url!.hostname).toBe('example.com')
+  })
+
+  it('handles protocol-relative URLs', () => {
+    const url = tryParseUrl('//example.com/path')
+    expect(url).not.toBeNull()
+    expect(url!.protocol).toBe('https:')
+    expect(url!.hostname).toBe('example.com')
+    expect(url!.pathname).toBe('/path')
   })
 
   it('returns null for empty string', () => {
