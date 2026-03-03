@@ -135,7 +135,9 @@ const USERNAME_PATTERNS: Partial<Record<SocialLinksPlatform, RegExp>> = {
 function parseHandleForNetwork(input: string, network: SocialLinksPlatform): SocialLinkParsedLink | null {
   const trimmed = input.trim()
   if (!trimmed) return null
-  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith('//')) return null
+  // Reject any input that looks like an http(s) scheme (even malformed like "http:foo")
+  // or protocol-relative input when forcing a network; these are URLs, not usernames.
+  if (/^https?:/i.test(trimmed) || trimmed.startsWith('//')) return null
 
   let candidate = trimmed.replace(/^\/+|\/+$/g, '')
   if (candidate.startsWith('@')) candidate = candidate.slice(1)
