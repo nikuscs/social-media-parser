@@ -30,6 +30,14 @@ describe('threads', () => {
         url: 'https://threads.net/@johndoe',
       })
     })
+
+    it('parses encoded /%40{username}', () => {
+      expect(parse('https://threads.net/%40johndoe')).toEqual({
+        type: 'profile',
+        entities: { username: 'johndoe' },
+        url: 'https://threads.net/@johndoe',
+      })
+    })
   })
 
   describe('null cases', () => {
@@ -40,6 +48,10 @@ describe('threads', () => {
     it('returns null for unsupported paths', () => {
       expect(parse('https://threads.net/trending')).toBeNull()
       expect(parse('https://threads.net/@johndoe/replies')).toBeNull()
+    })
+
+    it('returns null for malformed encoded path segments', () => {
+      expect(parse('https://threads.net/%E0%A4%A')).toBeNull()
     })
   })
 })

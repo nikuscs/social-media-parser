@@ -105,6 +105,14 @@ describe('youtube', () => {
       })
     })
 
+    it('parses encoded /%40{handle}', () => {
+      expect(parse('https://youtube.com/%40mkbhd')).toEqual({
+        type: 'channel',
+        entities: { username: 'mkbhd' },
+        url: 'https://youtube.com/@mkbhd',
+      })
+    })
+
     it('parses /channel/{id}', () => {
       expect(parse('https://youtube.com/channel/UCXuqSBlHAE6Xw-yeJA0Tunw')).toEqual({
         type: 'channel',
@@ -145,6 +153,10 @@ describe('youtube', () => {
 
     it('returns null for youtu.be with multiple segments', () => {
       expect(parse('https://youtu.be/abc/def')).toBeNull()
+    })
+
+    it('returns null for malformed encoded path segments', () => {
+      expect(parse('https://youtube.com/%E0%A4%A')).toBeNull()
     })
   })
 })

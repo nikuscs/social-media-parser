@@ -1,6 +1,13 @@
 import type { SocialLinksParseResult, SocialLinksPlatformParser } from '../types'
 
 const VIDEO_ID_RE = /^[a-zA-Z0-9_-]{11}$/
+const decodeSegment = (segment: string) => {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
 
 export const youtube: SocialLinksPlatformParser = {
   platform: 'youtube',
@@ -16,7 +23,7 @@ export const youtube: SocialLinksPlatformParser = {
   },
 
   parse(url): SocialLinksParseResult {
-    const segments = url.pathname.split('/').filter(Boolean)
+    const segments = url.pathname.split('/').filter(Boolean).map(decodeSegment)
 
     // youtu.be/{id} → video
     if (

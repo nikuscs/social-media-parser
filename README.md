@@ -1,13 +1,13 @@
 # social-media-parser
 
-A lightweight, zero-dependency TypeScript library for parsing, identifying, and normalizing social media URLs. Feed it any link from 18+ supported platforms and get back structured data — the platform name, content type, extracted entities (usernames, post IDs, video IDs), and a clean canonical URL with tracking parameters stripped away.
+A lightweight, zero-dependency TypeScript library for parsing, identifying, and normalizing social media URLs. Feed it any link from 39+ supported platforms and get back structured data — the platform name, content type, extracted entities (usernames, post IDs, video IDs), and a clean canonical URL with tracking parameters stripped away.
 
 Built for link previews, analytics pipelines, content aggregators, social bookmarking tools, or anywhere you need to make sense of messy social media URLs.
 
 ## Features
 
 - ⚡ Fast URL parsing and canonical normalization
-- 🌍 18+ platforms supported out of the box
+- 🌍 39+ platforms supported out of the box
 - 🧩 Extensible — bring your own parsers or use only the ones you need
 - 🧼 Cleans tracking params (`utm_*`, `fbclid`, `gclid`, `si`, `igshid`, etc.)
 - 🔒 Zero runtime dependencies
@@ -21,6 +21,22 @@ Built for link previews, analytics pipelines, content aggregators, social bookma
 - 👽 Reddit
 - 🧑‍💻 GitHub
 - ▶️ YouTube
+- 🎧 Spotify
+- 🐘 Mastodon
+- ☁️ SoundCloud
+- ☁️ Mixcloud
+- 💬 Discord
+- 📰 Substack
+- ✍️ Medium
+- 🇷🇺 Vkontakte (VK)
+- 📺 Rumble
+- 🎥 Kick
+- 📻 Radio Javan
+- 💸 Patreon
+- 💬 LINE
+- 🐧 QQ / Qzone
+- 🎧 Last.fm
+- ☕ Ko-fi
 - 📘 Facebook
 - 🔎 Search engines (Google, Bing, DuckDuckGo, Yahoo, Yandex, Baidu, Brave, Ecosia, Qwant, Startpage)
 - 💼 LinkedIn
@@ -61,7 +77,7 @@ normalize('https://youtu.be/dQw4w9WgXcQ?si=abc&utm_source=test')
 
 ## API
 
-### `parse(input, parsers?)`
+### `parse(input, options?)`
 
 Returns:
 
@@ -87,7 +103,15 @@ Returns:
 ```ts
 import { parse, twitter } from 'social-media-parser'
 
-const result = parse('https://x.com/elonmusk', [twitter])
+const result = parse('https://x.com/elonmusk', { parsers: [twitter] })
+```
+
+## Forced Network
+
+```ts
+import { parse } from 'social-media-parser'
+
+const result = parse('@elonmusk', { network: 'twitter' })
 ```
 
 ## Development

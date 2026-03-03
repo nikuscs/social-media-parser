@@ -19,6 +19,21 @@ describe('cross-platform reserved-route negatives', () => {
     { name: 'snapchat incomplete add', url: 'https://snapchat.com/add' },
     { name: 'vimeo channel root without video id', url: 'https://vimeo.com/channels/staffpicks' },
     { name: 'dailymotion video namespace', url: 'https://dailymotion.com/video' },
+    { name: 'mastodon about route', url: 'https://mastodon.social/about' },
+    { name: 'soundcloud discover namespace', url: 'https://soundcloud.com/discover' },
+    { name: 'mixcloud discover namespace', url: 'https://mixcloud.com/discover' },
+    { name: 'discord store namespace', url: 'https://discord.com/store' },
+    { name: 'substack home route', url: 'https://substack.com/home' },
+    { name: 'medium reserved route', url: 'https://medium.com/topics' },
+    { name: 'vk reserved route', url: 'https://vk.com/feed' },
+    { name: 'rumble empty root', url: 'https://rumble.com/' },
+    { name: 'kick reserved route', url: 'https://kick.com/categories' },
+    { name: 'radiojavan reserved route', url: 'https://radiojavan.com/search' },
+    { name: 'patreon reserved route', url: 'https://patreon.com/home' },
+    { name: 'line missing post id', url: 'https://line.me/R/home/public/post' },
+    { name: 'qq invalid uin', url: 'https://user.qzone.qq.com/notuin' },
+    { name: 'lastfm invalid user route', url: 'https://last.fm/user' },
+    { name: 'kofi reserved route', url: 'https://ko-fi.com/home' },
     { name: 'search homepage without query', url: 'https://google.com/search' },
   ]
 
@@ -35,6 +50,21 @@ describe('parse/normalize invariants', () => {
     'https://www.reddit.com/r/typescript/comments/abc123/sample-post',
     'https://github.com/facebook/react/issues/1',
     'https://youtu.be/dQw4w9WgXcQ',
+    'https://mastodon.social/@gargron/112233445566778899',
+    'https://soundcloud.com/porter-robinson/language',
+    'https://mixcloud.com/nts/morning-show-001',
+    'https://discord.com/channels/123456789012345678/223456789012345678/323456789012345678',
+    'https://platformer.substack.com/p/example-post',
+    'https://medium.com/@ev/example-post-abc123def456',
+    'https://vk.com/wall-12345_67890',
+    'https://rumble.com/v5abcde-example-title.html',
+    'https://kick.com/trainwreckstv',
+    'https://radiojavan.com/videos/video/artist-song',
+    'https://patreon.com/c/creator/posts/post-title-123456',
+    'https://line.me/ti/p/~mylineid',
+    'https://user.qzone.qq.com/123456789',
+    'https://last.fm/music/Daft+Punk/_/One+More+Time',
+    'https://ko-fi.com/somecreator',
     'https://facebook.com/watch/?v=123456789',
     'https://www.google.com/search?q=hello+world',
     'https://linkedin.com/in/jane-doe',
@@ -62,6 +92,28 @@ describe('parse/normalize invariants', () => {
     expect(normalized).not.toBeNull()
 
     const reparsed = parse(normalized!)
+    expect(reparsed).not.toBeNull()
+    expect(reparsed!.platform).toBe(parsed!.platform)
+    expect(reparsed!.type).toBe(parsed!.type)
+  })
+
+  it.each(canonicalizableUrls)('parses bare-domain input (no scheme) for %s', (url) => {
+    const parsed = parse(url)
+    expect(parsed).not.toBeNull()
+
+    const noScheme = url.replace(/^https?:\/\//, '')
+    const reparsed = parse(noScheme)
+    expect(reparsed).not.toBeNull()
+    expect(reparsed!.platform).toBe(parsed!.platform)
+    expect(reparsed!.type).toBe(parsed!.type)
+  })
+
+  it.each(canonicalizableUrls)('parses malformed http-scheme input for %s', (url) => {
+    const parsed = parse(url)
+    expect(parsed).not.toBeNull()
+
+    const malformed = url.replace(/^https?:\/\//, 'http:')
+    const reparsed = parse(malformed)
     expect(reparsed).not.toBeNull()
     expect(reparsed!.platform).toBe(parsed!.platform)
     expect(reparsed!.type).toBe(parsed!.type)
