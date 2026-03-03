@@ -1,6 +1,6 @@
 {
   "name": "social-media-parser",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight, zero-dependency library to parse, identify, and normalize social media URLs across 18+ platforms.",
   "private": false,
   "type": "module",
