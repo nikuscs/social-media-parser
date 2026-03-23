@@ -49,6 +49,35 @@ Built for link previews, analytics pipelines, content aggregators, social bookma
 - 🎬 Vimeo
 - ▶️ Dailymotion
 
+## Short Link & Redirect Domain Support
+
+The parser recognizes official short link and redirect domains for major platforms. When a short URL can be fully resolved (e.g., `youtu.be/{video_id}`), it returns the parsed content. When it can't be resolved without following a redirect, it returns `type: 'short'` so you can still identify the platform.
+
+| Platform | Short / Redirect Domains |
+| --- | --- |
+| Twitter / X | `t.co` |
+| TikTok | `vm.tiktok.com`, `vt.tiktok.com`, `tiktok.com/t/{code}` |
+| YouTube | `youtu.be` (resolved), `yt.be` |
+| Facebook | `fb.me`, `fb.watch` (resolved), `m.me` |
+| Instagram | `instagr.am`, `ig.me` |
+| Reddit | `redd.it` (resolved) |
+| Spotify | `spotify.link` |
+| LinkedIn | `lnkd.in` |
+| Pinterest | `pin.it` |
+| SoundCloud | `snd.sc` |
+| Discord | `discord.gg` (resolved), `discordapp.com` (full parsing), `dis.gd` |
+| Telegram | `t.me`, `telegram.me`, `telegram.dog` (all full parsing) |
+| Dailymotion | `dai.ly` (resolved) |
+| LINE | `lin.ee` (resolved) |
+
+```ts
+parse('https://vm.tiktok.com/ZSabc/')
+// { platform: 'tiktok', type: 'short', entities: {}, url: 'https://vm.tiktok.com/ZSabc/' }
+
+parse('https://youtu.be/dQw4w9WgXcQ')
+// { platform: 'youtube', type: 'video', entities: { video_id: 'dQw4w9WgXcQ' }, url: 'https://youtube.com/watch?v=dQw4w9WgXcQ' }
+```
+
 ## Installation
 
 ```bash

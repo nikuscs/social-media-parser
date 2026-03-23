@@ -10,13 +10,28 @@ export const discord: SocialLinksPlatformParser = {
     return (
       hostname === 'discord.gg' ||
       hostname === 'discord.com' ||
-      hostname.endsWith('.discord.com')
+      hostname.endsWith('.discord.com') ||
+      hostname === 'discordapp.com' ||
+      hostname.endsWith('.discordapp.com') ||
+      hostname === 'dis.gd'
     )
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
     const hostname = url.hostname
+
+    // dis.gd/{code} → short redirect link
+    if (hostname === 'dis.gd') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // discord.gg/{invite}
     if (hostname === 'discord.gg' && segments.length === 1 && INVITE_RE.test(segments[0])) {

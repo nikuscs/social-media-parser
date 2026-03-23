@@ -65,12 +65,50 @@ describe('tiktok', () => {
       })
     })
 
-    it('returns null for vm.tiktok.com links without item ids', () => {
-      expect(parse('https://vm.tiktok.com/ZSabc/')).toBeNull()
+    it('parses vm.tiktok.com links without item ids as short links', () => {
+      expect(parse('https://vm.tiktok.com/ZSabc/')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://vm.tiktok.com/ZSabc/',
+      })
     })
 
-    it('returns null for vm.tiktok.com links with invalid item ids', () => {
-      expect(parse('https://vm.tiktok.com/ZSabc/?share_item_id=not-numeric')).toBeNull()
+    it('parses vm.tiktok.com links with invalid item ids as short links', () => {
+      expect(parse('https://vm.tiktok.com/ZSabc/?share_item_id=not-numeric')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://vm.tiktok.com/ZSabc/?share_item_id=not-numeric',
+      })
+    })
+  })
+
+  describe('short links', () => {
+    it('parses tiktok.com/t/{code} short links', () => {
+      expect(parse('https://tiktok.com/t/ZS2abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://tiktok.com/t/ZS2abc123',
+      })
+    })
+
+    it('parses www.tiktok.com/t/{code} short links', () => {
+      expect(parse('https://www.tiktok.com/t/ZS2abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://tiktok.com/t/ZS2abc123',
+      })
+    })
+
+    it('parses bare vt.tiktok.com short links', () => {
+      expect(parse('https://vt.tiktok.com/ZSabc/')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://vt.tiktok.com/ZSabc/',
+      })
+    })
+
+    it('returns null for vm.tiktok.com root with no path', () => {
+      expect(parse('https://vm.tiktok.com/')).toBeNull()
     })
   })
 

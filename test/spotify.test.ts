@@ -10,6 +10,7 @@ describe('spotify', () => {
     it('matches open.spotify.com', () => expect(spotify.domains('open.spotify.com')).toBe(true))
     it('matches spotify.com', () => expect(spotify.domains('spotify.com')).toBe(true))
     it('matches subdomains under spotify.com', () => expect(spotify.domains('play.spotify.com')).toBe(true))
+    it('matches spotify.link', () => expect(spotify.domains('spotify.link')).toBe(true))
     it('rejects unrelated domains', () => expect(spotify.domains('notspotify.com')).toBe(false))
   })
 
@@ -52,6 +53,20 @@ describe('spotify', () => {
         entities: { username: 'wizzler' },
         url: 'https://open.spotify.com/user/wizzler',
       })
+    })
+  })
+
+  describe('short links', () => {
+    it('parses spotify.link/{code} as short link', () => {
+      expect(parse('https://spotify.link/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://spotify.link/abc123xyz',
+      })
+    })
+
+    it('returns null for spotify.link root with no path', () => {
+      expect(parse('https://spotify.link/')).toBeNull()
     })
   })
 

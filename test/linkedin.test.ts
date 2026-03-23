@@ -9,6 +9,7 @@ describe('linkedin', () => {
   describe('domains', () => {
     it('matches linkedin.com', () => expect(linkedin.domains('linkedin.com')).toBe(true))
     it('matches www.linkedin.com', () => expect(linkedin.domains('www.linkedin.com')).toBe(true))
+    it('matches lnkd.in', () => expect(linkedin.domains('lnkd.in')).toBe(true))
     it('rejects unrelated domains', () => expect(linkedin.domains('notlinkedin.com')).toBe(false))
   })
 
@@ -57,6 +58,20 @@ describe('linkedin', () => {
 
     it('returns null for /feed/update without urn', () => {
       expect(parse('https://linkedin.com/feed/update')).toBeNull()
+    })
+  })
+
+  describe('short links', () => {
+    it('parses lnkd.in/{code} as short link', () => {
+      expect(parse('https://lnkd.in/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://lnkd.in/abc123xyz',
+      })
+    })
+
+    it('returns null for lnkd.in root with no path', () => {
+      expect(parse('https://lnkd.in/')).toBeNull()
     })
   })
 

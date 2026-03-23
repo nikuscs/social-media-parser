@@ -12,6 +12,7 @@ describe('twitter', () => {
     it('matches x.com', () => expect(twitter.domains('x.com')).toBe(true))
     it('matches subdomain of twitter.com', () => expect(twitter.domains('mobile.twitter.com')).toBe(true))
     it('matches subdomain of x.com', () => expect(twitter.domains('mobile.x.com')).toBe(true))
+    it('matches t.co', () => expect(twitter.domains('t.co')).toBe(true))
     it('rejects unrelated domains', () => expect(twitter.domains('notwitter.com')).toBe(false))
     it('rejects partial match', () => expect(twitter.domains('fakex.com')).toBe(false))
   })
@@ -94,6 +95,20 @@ describe('twitter', () => {
 
     it('rejects multi-segment paths as profiles', () => {
       expect(parse('https://x.com/user/following')).toBeNull()
+    })
+  })
+
+  describe('short links', () => {
+    it('parses t.co/{code} as short link', () => {
+      expect(parse('https://t.co/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://t.co/abc123xyz',
+      })
+    })
+
+    it('returns null for t.co root with no path', () => {
+      expect(parse('https://t.co/')).toBeNull()
     })
   })
 

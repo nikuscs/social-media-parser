@@ -4,11 +4,23 @@ export const linkedin: SocialLinksPlatformParser = {
   platform: 'linkedin',
 
   domains(hostname) {
-    return hostname === 'linkedin.com' || hostname.endsWith('.linkedin.com')
+    return hostname === 'linkedin.com' || hostname.endsWith('.linkedin.com') || hostname === 'lnkd.in'
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
+
+    // lnkd.in/{code} → short redirect link
+    if (url.hostname === 'lnkd.in') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // Profile: /in/{username}
     if (segments.length >= 2 && segments[0] === 'in' && segments[1]) {

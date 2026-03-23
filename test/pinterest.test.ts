@@ -9,6 +9,7 @@ describe('pinterest', () => {
   describe('domains', () => {
     it('matches pinterest.com', () => expect(pinterest.domains('pinterest.com')).toBe(true))
     it('matches www.pinterest.com', () => expect(pinterest.domains('www.pinterest.com')).toBe(true))
+    it('matches pin.it', () => expect(pinterest.domains('pin.it')).toBe(true))
     it('rejects unrelated domains', () => expect(pinterest.domains('example.com')).toBe(false))
   })
 
@@ -47,6 +48,20 @@ describe('pinterest', () => {
 
     it('rejects reserved paths', () => {
       expect(parse('https://pinterest.com/search')).toBeNull()
+    })
+  })
+
+  describe('short links', () => {
+    it('parses pin.it/{code} as short link', () => {
+      expect(parse('https://pin.it/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://pin.it/abc123xyz',
+      })
+    })
+
+    it('returns null for pin.it root with no path', () => {
+      expect(parse('https://pin.it/')).toBeNull()
     })
   })
 

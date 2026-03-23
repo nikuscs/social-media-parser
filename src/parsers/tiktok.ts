@@ -33,6 +33,24 @@ export const tiktok: SocialLinksPlatformParser = {
           url: `https://tiktok.com/video/${shortVideoId}`,
         }
       }
+      // Bare short links without query params — still valid TikTok redirects
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
+
+    // tiktok.com/t/{code} short links
+    if (segments.length === 2 && segments[0] === 't' && /^[a-zA-Z0-9]+$/.test(segments[1])) {
+      return {
+        type: 'short',
+        entities: {},
+        url: `https://tiktok.com/t/${segments[1]}`,
+      }
     }
 
     // Video: /@{user}/video/{id}

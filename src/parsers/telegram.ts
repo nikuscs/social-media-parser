@@ -4,7 +4,7 @@ export const telegram: SocialLinksPlatformParser = {
   platform: 'telegram',
 
   domains(hostname) {
-    return hostname === 't.me' || hostname === 'telegram.me'
+    return hostname === 't.me' || hostname === 'telegram.me' || hostname === 'telegram.dog'
   },
 
   parse(url): SocialLinksParseResult {

@@ -10,6 +10,9 @@ describe('discord', () => {
     it('matches discord.gg', () => expect(discord.domains('discord.gg')).toBe(true))
     it('matches discord.com', () => expect(discord.domains('discord.com')).toBe(true))
     it('matches subdomains of discord.com', () => expect(discord.domains('ptb.discord.com')).toBe(true))
+    it('matches discordapp.com', () => expect(discord.domains('discordapp.com')).toBe(true))
+    it('matches subdomains of discordapp.com', () => expect(discord.domains('ptb.discordapp.com')).toBe(true))
+    it('matches dis.gd', () => expect(discord.domains('dis.gd')).toBe(true))
     it('rejects unrelated domains', () => expect(discord.domains('notdiscord.com')).toBe(false))
   })
 
@@ -24,6 +27,14 @@ describe('discord', () => {
 
     it('parses discord.com/invite invite', () => {
       expect(parse('https://discord.com/invite/openai')).toEqual({
+        type: 'group',
+        entities: { invite_code: 'openai' },
+        url: 'https://discord.gg/openai',
+      })
+    })
+
+    it('parses discordapp.com/invite invite (legacy domain)', () => {
+      expect(parse('https://discordapp.com/invite/openai')).toEqual({
         type: 'group',
         entities: { invite_code: 'openai' },
         url: 'https://discord.gg/openai',
@@ -53,6 +64,20 @@ describe('discord', () => {
         },
         url: 'https://discord.com/channels/123456789012345678/223456789012345678/323456789012345678',
       })
+    })
+  })
+
+  describe('short links', () => {
+    it('parses dis.gd/{code} as short link', () => {
+      expect(parse('https://dis.gd/abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://dis.gd/abc123',
+      })
+    })
+
+    it('returns null for dis.gd root with no path', () => {
+      expect(parse('https://dis.gd/')).toBeNull()
     })
   })
 

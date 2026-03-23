@@ -9,6 +9,8 @@ describe('instagram', () => {
   describe('domains', () => {
     it('matches instagram.com', () => expect(instagram.domains('instagram.com')).toBe(true))
     it('matches www.instagram.com', () => expect(instagram.domains('www.instagram.com')).toBe(true))
+    it('matches instagr.am', () => expect(instagram.domains('instagr.am')).toBe(true))
+    it('matches ig.me', () => expect(instagram.domains('ig.me')).toBe(true))
     it('rejects unrelated domains', () => expect(instagram.domains('notinstagram.com')).toBe(false))
   })
 
@@ -118,6 +120,40 @@ describe('instagram', () => {
       expect(result!.type).toBe('post')
       expect(result!.entities.post_id).toBe('ABC123')
       expect(result!.entities.username).toBe('nikuscs')
+    })
+  })
+
+  describe('short links', () => {
+    it('parses instagr.am/{code} as short link', () => {
+      expect(parse('https://instagr.am/p/ABC123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://instagr.am/p/ABC123',
+      })
+    })
+
+    it('parses instagr.am single-segment path as short link', () => {
+      expect(parse('https://instagr.am/abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://instagr.am/abc123',
+      })
+    })
+
+    it('returns null for instagr.am root with no path', () => {
+      expect(parse('https://instagr.am/')).toBeNull()
+    })
+
+    it('parses ig.me/{code} as short link', () => {
+      expect(parse('https://ig.me/m/johndoe')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://ig.me/m/johndoe',
+      })
+    })
+
+    it('returns null for ig.me root with no path', () => {
+      expect(parse('https://ig.me/')).toBeNull()
     })
   })
 

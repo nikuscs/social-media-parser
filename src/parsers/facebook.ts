@@ -22,13 +22,27 @@ export const facebook: SocialLinksPlatformParser = {
       hostname === 'facebook.com' ||
       hostname.endsWith('.facebook.com') ||
       hostname === 'fb.com' ||
-      hostname === 'fb.watch'
+      hostname === 'fb.watch' ||
+      hostname === 'fb.me' ||
+      hostname === 'm.me'
     )
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
     const hostname = url.hostname
+
+    // fb.me/{code} or m.me/{code} → short redirect link
+    if (hostname === 'fb.me' || hostname === 'm.me') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // fb.watch/{id} → video
     if (hostname === 'fb.watch' && segments.length === 1) {

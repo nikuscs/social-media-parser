@@ -14,6 +14,7 @@ describe('youtube', () => {
     it('matches youtu.be', () => expect(youtube.domains('youtu.be')).toBe(true))
     it('matches youtube-nocookie.com', () => expect(youtube.domains('youtube-nocookie.com')).toBe(true))
     it('matches www.youtube-nocookie.com', () => expect(youtube.domains('www.youtube-nocookie.com')).toBe(true))
+    it('matches yt.be', () => expect(youtube.domains('yt.be')).toBe(true))
     it('rejects unrelated domains', () => expect(youtube.domains('notyoutube.com')).toBe(false))
   })
 
@@ -139,6 +140,20 @@ describe('youtube', () => {
 
     it('rejects bare @ with no handle', () => {
       expect(parse('https://youtube.com/@')).toBeNull()
+    })
+  })
+
+  describe('short links', () => {
+    it('parses yt.be/{code} as short link', () => {
+      expect(parse('https://yt.be/abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://yt.be/abc123',
+      })
+    })
+
+    it('returns null for yt.be root with no path', () => {
+      expect(parse('https://yt.be/')).toBeNull()
     })
   })
 

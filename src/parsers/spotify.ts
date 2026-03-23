@@ -9,12 +9,25 @@ export const spotify: SocialLinksPlatformParser = {
     return (
       hostname === 'spotify.com' ||
       hostname === 'open.spotify.com' ||
-      hostname.endsWith('.spotify.com')
+      hostname.endsWith('.spotify.com') ||
+      hostname === 'spotify.link'
     )
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
+
+    // spotify.link/{code} → short redirect link
+    if (url.hostname === 'spotify.link') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     if (segments.length === 2 && segments[0] === 'user') {
       return {

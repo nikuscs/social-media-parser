@@ -18,7 +18,8 @@ export const youtube: SocialLinksPlatformParser = {
       hostname.endsWith('.youtube.com') ||
       hostname === 'youtu.be' ||
       hostname === 'youtube-nocookie.com' ||
-      hostname.endsWith('.youtube-nocookie.com')
+      hostname.endsWith('.youtube-nocookie.com') ||
+      hostname === 'yt.be'
     )
   },
 
@@ -36,6 +37,18 @@ export const youtube: SocialLinksPlatformParser = {
         entities: { video_id: segments[0] },
         url: `https://youtube.com/watch?v=${segments[0]}`,
       }
+    }
+
+    // yt.be/{code} → short redirect link
+    if (url.hostname === 'yt.be') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
     }
 
     // /watch?v={id}

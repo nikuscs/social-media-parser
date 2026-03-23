@@ -19,12 +19,25 @@ export const twitter: SocialLinksPlatformParser = {
       hostname === 'twitter.com' ||
       hostname === 'x.com' ||
       hostname.endsWith('.twitter.com') ||
-      hostname.endsWith('.x.com')
+      hostname.endsWith('.x.com') ||
+      hostname === 't.co'
     )
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
+
+    // t.co/{code} → short redirect link (wraps any URL shared on X)
+    if (url.hostname === 't.co') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // Post: /i/status/{id}
     if (segments.length >= 3 && segments[0] === 'i' && segments[1] === 'status' && /^\d+$/.test(segments[2])) {

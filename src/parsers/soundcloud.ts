@@ -26,13 +26,23 @@ export const soundcloud: SocialLinksPlatformParser = {
   domains(hostname) {
     return (
       hostname === 'soundcloud.com' ||
-      hostname.endsWith('.soundcloud.com')
+      hostname.endsWith('.soundcloud.com') ||
+      hostname === 'snd.sc'
     )
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
     if (segments.length === 0) return null
+
+    // snd.sc/{code} → short redirect link
+    if (url.hostname === 'snd.sc') {
+      return {
+        type: 'short',
+        entities: {},
+        url: url.toString(),
+      }
+    }
 
     const username = segments[0]
     if (RESERVED.has(username.toLowerCase())) return null

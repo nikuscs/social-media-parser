@@ -13,6 +13,8 @@ describe('facebook', () => {
     it('matches web.facebook.com', () => expect(facebook.domains('web.facebook.com')).toBe(true))
     it('matches fb.com', () => expect(facebook.domains('fb.com')).toBe(true))
     it('matches fb.watch', () => expect(facebook.domains('fb.watch')).toBe(true))
+    it('matches fb.me', () => expect(facebook.domains('fb.me')).toBe(true))
+    it('matches m.me', () => expect(facebook.domains('m.me')).toBe(true))
     it('rejects unrelated domains', () => expect(facebook.domains('notfacebook.com')).toBe(false))
     it('rejects partial match', () => expect(facebook.domains('fakefb.com')).toBe(false))
   })
@@ -190,6 +192,40 @@ describe('facebook', () => {
         entities: { event_id: '123456789' },
         url: 'https://facebook.com/events/123456789',
       })
+    })
+  })
+
+  describe('short links', () => {
+    it('parses fb.me/{code} as short link', () => {
+      expect(parse('https://fb.me/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://fb.me/abc123xyz',
+      })
+    })
+
+    it('parses fb.me with nested path as short link', () => {
+      expect(parse('https://fb.me/story/abc123')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://fb.me/story/abc123',
+      })
+    })
+
+    it('returns null for fb.me root with no path', () => {
+      expect(parse('https://fb.me/')).toBeNull()
+    })
+
+    it('parses m.me/{username} as short link', () => {
+      expect(parse('https://m.me/johndoe')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://m.me/johndoe',
+      })
+    })
+
+    it('returns null for m.me root with no path', () => {
+      expect(parse('https://m.me/')).toBeNull()
     })
   })
 

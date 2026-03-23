@@ -9,6 +9,7 @@ describe('telegram', () => {
   describe('domains', () => {
     it('matches t.me', () => expect(telegram.domains('t.me')).toBe(true))
     it('matches telegram.me', () => expect(telegram.domains('telegram.me')).toBe(true))
+    it('matches telegram.dog', () => expect(telegram.domains('telegram.dog')).toBe(true))
     it('rejects unrelated domains', () => expect(telegram.domains('example.com')).toBe(false))
   })
 
@@ -51,6 +52,14 @@ describe('telegram', () => {
   describe('profile', () => {
     it('parses /{channel}', () => {
       expect(parse('https://t.me/openai')).toEqual({
+        type: 'profile',
+        entities: { username: 'openai' },
+        url: 'https://t.me/openai',
+      })
+    })
+
+    it('parses telegram.dog/{channel}', () => {
+      expect(parse('https://telegram.dog/openai')).toEqual({
         type: 'profile',
         entities: { username: 'openai' },
         url: 'https://t.me/openai',

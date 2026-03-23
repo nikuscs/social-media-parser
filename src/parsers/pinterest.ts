@@ -19,11 +19,23 @@ export const pinterest: SocialLinksPlatformParser = {
   platform: 'pinterest',
 
   domains(hostname) {
-    return hostname === 'pinterest.com' || hostname.endsWith('.pinterest.com')
+    return hostname === 'pinterest.com' || hostname.endsWith('.pinterest.com') || hostname === 'pin.it'
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
+
+    // pin.it/{code} → short redirect link
+    if (url.hostname === 'pin.it') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // Pin: /pin/{id}
     if (segments.length >= 2 && segments[0] === 'pin' && /^\d+$/.test(segments[1])) {

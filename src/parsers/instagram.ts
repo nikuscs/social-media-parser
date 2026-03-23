@@ -15,11 +15,23 @@ export const instagram: SocialLinksPlatformParser = {
   platform: 'instagram',
 
   domains(hostname) {
-    return hostname === 'instagram.com' || hostname.endsWith('.instagram.com')
+    return hostname === 'instagram.com' || hostname.endsWith('.instagram.com') || hostname === 'instagr.am' || hostname === 'ig.me'
   },
 
   parse(url): SocialLinksParseResult {
     const segments = url.pathname.split('/').filter(Boolean)
+
+    // instagr.am/{code} or ig.me/{code} → short redirect link
+    if (url.hostname === 'instagr.am' || url.hostname === 'ig.me') {
+      if (segments.length > 0) {
+        return {
+          type: 'short',
+          entities: {},
+          url: url.toString(),
+        }
+      }
+      return null
+    }
 
     // Post: /(p|reel|reels|tv)/{shortcode}
     if (segments.length === 2 && POST_TYPES.has(segments[0])) {

@@ -9,6 +9,7 @@ describe('soundcloud', () => {
   describe('domains', () => {
     it('matches soundcloud.com', () => expect(soundcloud.domains('soundcloud.com')).toBe(true))
     it('matches subdomains under soundcloud.com', () => expect(soundcloud.domains('m.soundcloud.com')).toBe(true))
+    it('matches snd.sc', () => expect(soundcloud.domains('snd.sc')).toBe(true))
     it('rejects unrelated domains', () => expect(soundcloud.domains('notsoundcloud.com')).toBe(false))
   })
 
@@ -35,6 +36,20 @@ describe('soundcloud', () => {
         entities: { username: 'porter-robinson', playlist: 'worlds' },
         url: 'https://soundcloud.com/porter-robinson/sets/worlds',
       })
+    })
+  })
+
+  describe('short links', () => {
+    it('parses snd.sc/{code} as short link', () => {
+      expect(parse('https://snd.sc/abc123xyz')).toEqual({
+        type: 'short',
+        entities: {},
+        url: 'https://snd.sc/abc123xyz',
+      })
+    })
+
+    it('returns null for snd.sc root with no path', () => {
+      expect(parse('https://snd.sc/')).toBeNull()
     })
   })
 
