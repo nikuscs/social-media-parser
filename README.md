@@ -87,13 +87,13 @@ npm install social-media-parser
 ## Quick Example
 
 ```ts
-import { parse, identify, normalize } from 'social-media-parser'
+import { parse, identify, normalize, shorten } from 'social-media-parser'
 
 parse('https://twitter.com/elonmusk/status/1234567890')
 // {
 //   platform: 'twitter',
 //   type: 'post',
-//   entities: { post_id: '1234567890', username: 'elonmusk' },
+//   entities: { username: 'elonmusk', post_id: '1234567890' },
 //   url: 'https://x.com/i/status/1234567890'
 // }
 
@@ -102,6 +102,15 @@ identify('https://www.instagram.com/johndoe/')
 
 normalize('https://youtu.be/dQw4w9WgXcQ?si=abc&utm_source=test')
 // 'https://youtube.com/watch?v=dQw4w9WgXcQ'
+
+shorten('https://instagram.com/p/ABC123')
+// 'ABC123'
+
+shorten('https://twitter.com/elonmusk/status/1234567890')
+// 'elonmusk/1234567890'
+
+shorten('https://www.example.com/some/path?ref=123')
+// 'example.com/some/path'
 ```
 
 ## API
@@ -126,6 +135,15 @@ Returns:
 
 - canonical URL string
 - `null` when unsupported
+
+### `shorten(input, options?)`
+
+Returns the shortest meaningful identifier from a URL. For recognized platforms, it joins the parsed entity values (e.g., `username/post_id`). For short links with no entities, it extracts the path. For unrecognized URLs, it strips the protocol, `www.`, query string, and hash.
+
+Returns:
+
+- shortened string identifier
+- `null` when input is unparseable
 
 ## Custom Parsers
 
