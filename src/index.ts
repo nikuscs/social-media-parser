@@ -239,3 +239,29 @@ export function normalize(
 ): string | null {
   return parse(input, { parsers })?.url ?? null
 }
+
+export function shorten(
+  input: string,
+  options: SocialLinksParseOptions = {},
+): string | null {
+  const parsed = parse(input, options)
+
+  if (parsed) {
+    const values = Object.values(parsed.entities)
+    if (values.length > 0) return values.join('/')
+
+    // type: 'short' with empty entities — extract path from URL
+    return new URL(parsed.url).pathname.split('/').filter(Boolean).join('/')
+  }
+
+  // Fallback: strip protocol, www, query, hash, trailing slash
+  const url = tryParseUrl(input)
+  if (!url) return null
+
+  const cleaned = cleanUrl(url)
+  let result = cleaned.hostname.replace(/^www\./, '')
+  const path = cleaned.pathname.replace(/\/+$/, '')
+  if (path && path !== '/') result += path
+
+  return result
+}

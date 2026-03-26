@@ -75,13 +75,6 @@ export const reddit: SocialLinksPlatformParser = {
           url: `https://reddit.com/comments/${segments[1]}/_/${segments[3]}`,
         }
       }
-      if (segments.length === 3 && COMMENT_ID_RE.test(segments[2])) {
-        return {
-          type: 'comment',
-          entities: { post_id: segments[1], comment_id: segments[2] },
-          url: `https://reddit.com/comments/${segments[1]}/_/${segments[2]}`,
-        }
-      }
       return {
         type: 'post',
         entities: { post_id: segments[1] },

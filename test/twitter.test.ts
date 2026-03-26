@@ -31,7 +31,7 @@ describe('twitter', () => {
       const result = parse('https://twitter.com/elonmusk/status/1234567890')
       expect(result).toEqual({
         type: 'post',
-        entities: { post_id: '1234567890', username: 'elonmusk' },
+        entities: { username: 'elonmusk', post_id: '1234567890' },
         url: 'https://x.com/i/status/1234567890',
       })
     })
@@ -49,7 +49,7 @@ describe('twitter', () => {
       const result = parse('https://twitter.com/user/status/123456/photo/1')
       expect(result).toEqual({
         type: 'post',
-        entities: { post_id: '123456', username: 'user' },
+        entities: { username: 'user', post_id: '123456' },
         url: 'https://x.com/i/status/123456',
       })
     })

@@ -18,7 +18,7 @@ describe('tiktok', () => {
     it('parses /@{user}/video/{id}', () => {
       expect(parse('https://tiktok.com/@username/video/123456789012345678')).toEqual({
         type: 'video',
-        entities: { video_id: '123456789012345678', username: 'username' },
+        entities: { username: 'username', video_id: '123456789012345678' },
         url: 'https://tiktok.com/@username/video/123456789012345678',
       })
     })

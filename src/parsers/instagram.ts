@@ -46,7 +46,7 @@ export const instagram: SocialLinksPlatformParser = {
     if (segments.length === 3 && POST_TYPES.has(segments[1])) {
       return {
         type: 'post',
-        entities: { post_id: segments[2], username: segments[0] },
+        entities: { username: segments[0], post_id: segments[2] },
         url: `https://instagram.com/p/${segments[2]}`,
       }
     }

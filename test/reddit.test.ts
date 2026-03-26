@@ -69,11 +69,12 @@ describe('reddit', () => {
       })
     })
 
-    it('parses /comments/{id}/{comment_id}', () => {
+    it('parses /comments/{id}/{slug} as post not comment', () => {
+      // 3-segment form is always post+slug, never comment
       expect(parse('https://reddit.com/comments/abc12345/abcdefg0')).toEqual({
-        type: 'comment',
-        entities: { post_id: 'abc12345', comment_id: 'abcdefg0' },
-        url: 'https://reddit.com/comments/abc12345/_/abcdefg0',
+        type: 'post',
+        entities: { post_id: 'abc12345' },
+        url: 'https://reddit.com/comments/abc12345',
       })
     })
 

@@ -150,7 +150,7 @@ export const facebook: SocialLinksPlatformParser = {
     if (segments.length === 3 && segments[1] === 'posts') {
       return {
         type: 'post',
-        entities: { post_id: segments[2], username: segments[0] },
+        entities: { username: segments[0], post_id: segments[2] },
         url: `https://facebook.com/${segments[0]}/posts/${segments[2]}`,
       }
     }
@@ -159,7 +159,7 @@ export const facebook: SocialLinksPlatformParser = {
     if (segments.length === 3 && segments[1] === 'videos') {
       return {
         type: 'video',
-        entities: { video_id: segments[2], username: segments[0] },
+        entities: { username: segments[0], video_id: segments[2] },
         url: `https://facebook.com/${segments[0]}/videos/${segments[2]}`,
       }
     }
@@ -168,7 +168,7 @@ export const facebook: SocialLinksPlatformParser = {
     if (segments.length === 3 && segments[1] === 'photos') {
       return {
         type: 'photo',
-        entities: { photo_id: segments[2], username: segments[0] },
+        entities: { username: segments[0], photo_id: segments[2] },
         url: `https://facebook.com/${segments[0]}/photos/${segments[2]}`,
       }
     }

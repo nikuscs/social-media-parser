@@ -55,7 +55,7 @@ describe('facebook', () => {
     it('parses /{user}/videos/{id}', () => {
       expect(parse('https://facebook.com/johndoe/videos/123456')).toEqual({
         type: 'video',
-        entities: { video_id: '123456', username: 'johndoe' },
+        entities: { username: 'johndoe', video_id: '123456' },
         url: 'https://facebook.com/johndoe/videos/123456',
       })
     })
@@ -69,7 +69,7 @@ describe('facebook', () => {
     it('parses /{user}/posts/{post_id}', () => {
       expect(parse('https://facebook.com/johndoe/posts/123456789')).toEqual({
         type: 'post',
-        entities: { post_id: '123456789', username: 'johndoe' },
+        entities: { username: 'johndoe', post_id: '123456789' },
         url: 'https://facebook.com/johndoe/posts/123456789',
       })
     })
@@ -115,7 +115,7 @@ describe('facebook', () => {
     it('parses /{user}/photos/{id}', () => {
       expect(parse('https://facebook.com/johndoe/photos/123456')).toEqual({
         type: 'photo',
-        entities: { photo_id: '123456', username: 'johndoe' },
+        entities: { username: 'johndoe', photo_id: '123456' },
         url: 'https://facebook.com/johndoe/photos/123456',
       })
     })

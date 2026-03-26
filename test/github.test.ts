@@ -9,7 +9,7 @@ describe('github', () => {
   describe('domains', () => {
     it('matches github.com', () => expect(github.domains('github.com')).toBe(true))
     it('matches gist.github.com', () => expect(github.domains('gist.github.com')).toBe(true))
-    it('rejects subdomains', () => expect(github.domains('www.github.com')).toBe(false))
+    it('matches www.github.com', () => expect(github.domains('www.github.com')).toBe(true))
     it('rejects unrelated domains', () => expect(github.domains('notgithub.com')).toBe(false))
   })
 
@@ -25,7 +25,7 @@ describe('github', () => {
     it('parses gist.github.com/{user}/{hex_id}', () => {
       expect(parse('https://gist.github.com/johndoe/abc123def')).toEqual({
         type: 'gist',
-        entities: { gist_id: 'abc123def', username: 'johndoe' },
+        entities: { username: 'johndoe', gist_id: 'abc123def' },
         url: 'https://gist.github.com/abc123def',
       })
     })

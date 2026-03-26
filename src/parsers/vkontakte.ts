@@ -1,5 +1,7 @@
 import type { SocialLinksParseResult, SocialLinksPlatformParser } from '../types'
 
+const USERNAME_RE = /^[a-zA-Z][a-zA-Z0-9_.]{2,}$/
+
 const RESERVED = new Set([
   'feed',
   'im',
@@ -37,7 +39,7 @@ export const vkontakte: SocialLinksPlatformParser = {
     }
 
     // /{screen_name}
-    if (segments.length === 1 && !RESERVED.has(segments[0].toLowerCase())) {
+    if (segments.length === 1 && !RESERVED.has(segments[0].toLowerCase()) && USERNAME_RE.test(segments[0])) {
       return {
         type: 'profile',
         entities: { username: segments[0] },

@@ -7,7 +7,7 @@ describe('parse', () => {
     expect(result).toEqual({
       platform: 'twitter',
       type: 'post',
-      entities: { post_id: '1234567890', username: 'elonmusk' },
+      entities: { username: 'elonmusk', post_id: '1234567890' },
       url: 'https://x.com/i/status/1234567890',
     })
   })
@@ -27,7 +27,7 @@ describe('parse', () => {
     expect(result).toEqual({
       platform: 'tiktok',
       type: 'video',
-      entities: { video_id: '123456789012345678', username: 'user' },
+      entities: { username: 'user', video_id: '123456789012345678' },
       url: 'https://tiktok.com/@user/video/123456789012345678',
     })
   })
@@ -231,7 +231,7 @@ describe('parse', () => {
     expect(result).toEqual({
       platform: 'facebook',
       type: 'post',
-      entities: { post_id: '123456789', username: 'johndoe' },
+      entities: { username: 'johndoe', post_id: '123456789' },
       url: 'https://facebook.com/johndoe/posts/123456789',
     })
   })

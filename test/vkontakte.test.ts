@@ -28,6 +28,25 @@ describe('vkontakte', () => {
     })
   })
 
+  it('accepts username with dots and underscores', () => {
+    expect(parse('https://vk.com/user.name')?.entities.username).toBe('user.name')
+    expect(parse('https://vk.com/user_name')?.entities.username).toBe('user_name')
+  })
+
+  it('rejects usernames with special characters', () => {
+    expect(parse('https://vk.com/!!!invalid!!!')).toBeNull()
+    expect(parse('https://vk.com/user name')).toBeNull()
+    expect(parse('https://vk.com/user@name')).toBeNull()
+  })
+
+  it('rejects usernames starting with number', () => {
+    expect(parse('https://vk.com/123user')).toBeNull()
+  })
+
+  it('rejects usernames shorter than 3 chars', () => {
+    expect(parse('https://vk.com/ab')).toBeNull()
+  })
+
   it('returns null for reserved or empty paths', () => {
     expect(parse('https://vk.com/')).toBeNull()
     expect(parse('https://vk.com/feed')).toBeNull()

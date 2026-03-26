@@ -53,7 +53,7 @@ export const twitter: SocialLinksPlatformParser = {
       if (segments[1] === 'status' && /^\d+$/.test(segments[2])) {
         return {
           type: 'post',
-          entities: { post_id: segments[2], username: segments[0] },
+          entities: { username: segments[0], post_id: segments[2] },
           url: `https://x.com/i/status/${segments[2]}`,
         }
       }

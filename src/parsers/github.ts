@@ -22,7 +22,7 @@ export const github: SocialLinksPlatformParser = {
   platform: 'github',
 
   domains(hostname) {
-    return hostname === 'github.com' || hostname === 'gist.github.com'
+    return hostname === 'github.com' || hostname.endsWith('.github.com')
   },
 
   parse(url): SocialLinksParseResult {
@@ -40,7 +40,7 @@ export const github: SocialLinksPlatformParser = {
       if (segments.length === 2 && GIST_ID_RE.test(segments[1])) {
         return {
           type: 'gist',
-          entities: { gist_id: segments[1], username: segments[0] },
+          entities: { username: segments[0], gist_id: segments[1] },
           url: `https://gist.github.com/${segments[1]}`,
         }
       }

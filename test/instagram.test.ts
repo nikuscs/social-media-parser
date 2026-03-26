@@ -50,7 +50,7 @@ describe('instagram', () => {
     it('parses /{user}/p/{shortcode}', () => {
       expect(parse('https://instagram.com/johndoe/p/ABC123')).toEqual({
         type: 'post',
-        entities: { post_id: 'ABC123', username: 'johndoe' },
+        entities: { username: 'johndoe', post_id: 'ABC123' },
         url: 'https://instagram.com/p/ABC123',
       })
     })

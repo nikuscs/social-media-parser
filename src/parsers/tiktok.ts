@@ -63,7 +63,7 @@ export const tiktok: SocialLinksPlatformParser = {
       const username = segments[0].slice(1)
       return {
         type: 'video',
-        entities: { video_id: segments[2], username },
+        entities: { username, video_id: segments[2] },
         url: `https://tiktok.com/@${username}/video/${segments[2]}`,
       }
     }
