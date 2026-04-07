@@ -32,6 +32,9 @@ export type SocialLinksPlatform =
   | 'snapchat'
   | 'vimeo'
   | 'dailymotion'
+  | 'clubhouse'
+  | 'onlyfans'
+  | 'app_store'
 
 export type SocialLinksContentType =
   | 'post'

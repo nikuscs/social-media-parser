@@ -38,6 +38,9 @@ import { telegram } from './parsers/telegram'
 import { snapchat } from './parsers/snapchat'
 import { vimeo } from './parsers/vimeo'
 import { dailymotion } from './parsers/dailymotion'
+import { clubhouse } from './parsers/clubhouse'
+import { onlyfans } from './parsers/onlyfans'
+import { app_store } from './parsers/app_store'
 
 export type * from './types'
 export { tryParseUrl, cleanUrl } from './url'
@@ -74,6 +77,9 @@ export { telegram } from './parsers/telegram'
 export { snapchat } from './parsers/snapchat'
 export { vimeo } from './parsers/vimeo'
 export { dailymotion } from './parsers/dailymotion'
+export { clubhouse } from './parsers/clubhouse'
+export { onlyfans } from './parsers/onlyfans'
+export { app_store } from './parsers/app_store'
 
 const defaultParsers: SocialLinksPlatformParser[] = [
   twitter,
@@ -109,6 +115,9 @@ const defaultParsers: SocialLinksPlatformParser[] = [
   snapchat,
   vimeo,
   dailymotion,
+  clubhouse,
+  onlyfans,
+  app_store,
 ]
 
 const NETWORK_PARSER_MAP = new Map<SocialLinksPlatform, SocialLinksPlatformParser>(
